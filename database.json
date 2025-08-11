@@ -1,0 +1,740 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Nguyen Van A",
+      "password": 12345,
+      "email": "vana@gmail.com"
+    },
+    {
+      "id": "2",
+      "username": "TanTan",
+      "password": "12345",
+      "email": "tantan@gmail.com",
+      "phone": "0123456789"
+    },
+    {
+      "id": "3",
+      "username": "abc",
+      "password": "123",
+      "email": "abc@gmail.com",
+      "phone": "12345678"
+    },
+    {
+      "id": "4",
+      "username": "tt",
+      "password": "123",
+      "email": "tt@gmail.com",
+      "phone": "121345"
+    },
+    {
+      "id": "5",
+      "username": "bnt",
+      "password": "123",
+      "email": "bnt@gmail.com",
+      "phone": "1234567890"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "tendm": "Trà sữa"
+    },
+    {
+      "id": "2",
+      "tendm": "Bánh ngọt - Coffee"
+    },
+    {
+      "id": "3",
+      "tendm": "Topping"
+    }
+  ],
+  "categories_item": [
+    {
+      "id": "1",
+      "tendm": "Trà sữa",
+      "categories_id": 1
+    },
+    {
+      "id": "2",
+      "tendm": "Trà cream",
+      "categories_id": 1
+    },
+    {
+      "id": "3",
+      "tendm": "Trà sữa tươi - Sữa tươi",
+      "categories_id": 1
+    },
+    {
+      "id": "4",
+      "tendm": "Trà trái cây",
+      "categories_id": 1
+    },
+    {
+      "id": "5",
+      "tendm": "Topping",
+      "categories_id": 3
+    },
+    {
+      "id": "6",
+      "tendm": "Coffeee",
+      "categories_id": 2
+    },
+    {
+      "id": "7",
+      "tendm": "Bánh ngọt",
+      "categories_id": 2
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "img": "CaPheSuaDa.webp",
+      "name": "Cà phê sữa đá",
+      "price": 35000,
+      "categories_item_id": 6
+    },
+    {
+      "id": "2",
+      "img": "CaPheDaThomManhBungTinh.webp",
+      "name": "Cà phê đá thơm mạnh bừng tỉnh",
+      "price": 32000,
+      "categories_item_id": 6
+    },
+    {
+      "id": "3",
+      "img": "CaPheSocolaThomBeoNgot.webp",
+      "name": "Cà phê socola thơm béo ngọt",
+      "price": 35000,
+      "categories_item_id": 6
+    },
+    {
+      "id": "4",
+      "img": "CaPheUyenUongNongChay.webp",
+      "name": "Cà phê uyên ương nồng cháy",
+      "price": 45000,
+      "categories_item_id": 6
+    },
+    {
+      "id": "5",
+      "img": "TraSuaOlongHoaHongYenMach.webp",
+      "name": "Trà sữa olong hoa hồng yến mạch",
+      "price": 55000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "6",
+      "img": "TraSuaViPhoMaiPuddingTrung.webp",
+      "name": "Trà sữa vị phô mai pudding trứng",
+      "price": 60000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "7",
+      "img": "TraSuaSocolaTranChauDuongDen.webp",
+      "name": "Trà sữa socola trân châu đường đen",
+      "price": 58000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "8",
+      "img": "TraSuaKhoaiMonTuoi.webp",
+      "name": "Trà Sữa Khoai Môn Tươi",
+      "price": 55000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "9",
+      "img": "TraSuaSocolaPuddingSocola.webp",
+      "name": "Trà sữa socola pudding socola",
+      "price": 55000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "10",
+      "img": "HongLucTraSuaPuddingCream.webp",
+      "name": "Hồng-Lục trà sữa pudding cream",
+      "price": 60000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "11",
+      "img": "HongLucTraSuaThanhLocCoThe.webp",
+      "name": "Hồng-Lục trà sữa thanh lọc cơ thể",
+      "price": 45000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "12",
+      "img": "TraSua3LoaiThachGionDai.webp",
+      "name": "Trà Sữa 3 Loại Thạch Giòn Dai",
+      "price": 65000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "13",
+      "img": "HongLucTraSuaCream.webp",
+      "name": "Hồng-Lục trà sữa cream",
+      "price": 60000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "14",
+      "img": "TraSuaSocolaChuoiThomNgon.webp",
+      "name": "Trà sữa socola chuối thơm ngon",
+      "price": 60000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "15",
+      "img": "TraSuaTranChauDuongDen-Frogcrash.webp",
+      "name": "Trà sữa trân châu đường đen - Frogcrash",
+      "price": 55000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "16",
+      "img": "HongLucTraSuaTranChauMemMuot.webp",
+      "name": "Hồng-Lục trà sữa trân châu mềm mượt",
+      "price": 50000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "17",
+      "img": "TraSuaOlong-OlongHoaHong.webp",
+      "name": "Trà sữa Olong-Olong hoa hồng",
+      "price": 50000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "18",
+      "img": "HongLucTraSuaPudding.webp",
+      "name": "Hồng-Lục trà sữa pudding",
+      "price": 50000,
+      "categories_item_id": 1
+    },
+    {
+      "id": "19",
+      "img": "TraSuaNguCocCreamNgonTuyet.webp",
+      "name": "Trà sữa ngũ cốc cream ngon tuyệt",
+      "price": 58000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "20",
+      "img": "SuaCookiesCreamNgonSanhMin.webp",
+      "name": "Sữa cookies cream ngon sánh mịn",
+      "price": 58000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "21",
+      "img": "LucTraXoaiCream.webp",
+      "name": "Lục trà xoài cream",
+      "price": 60000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "22",
+      "img": "TraOlong-OlongHoaHongCream.webp",
+      "name": "Trà olong-olong hoa hồng cream",
+      "price": 55000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "23",
+      "img": "TraSuaOreoSocolaCream.webp",
+      "name": "Trà sữa oreo socola cream",
+      "price": 58000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "24",
+      "img": "HongLucTraCreamSanhMinThomBeo.webp",
+      "name": "Hồng-Lục trà cream sánh mịn, thơm béo",
+      "price": 50000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "25",
+      "img": "TraSuaSocolaCream.webp",
+      "name": "Trà sữa socola cream",
+      "price": 55000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "26",
+      "img": "TraThanhLongCream.webp",
+      "name": "Trà thanh long cream",
+      "price": 60000,
+      "categories_item_id": 2
+    },
+    {
+      "id": "27",
+      "img": "YenMachKhoaiMonSua.webp",
+      "name": "Yến mạch khoai môn sữa",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "28",
+      "img": "SuaNguCocYenMach.webp",
+      "name": "Sữa ngũ cốc yến mạch",
+      "price": 55000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "29",
+      "img": "LucTraSuaTuoiVietQuat.webp",
+      "name": "Lục trà sữa tươi việt quất",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "30",
+      "img": "TraSuaTuoiHanhNhan.webp",
+      "name": "Trà sữa tươi hạnh nhân",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "31",
+      "img": "SuaTuoiTranChauDuongDen.webp",
+      "name": "Sữa tươi trân châu đường đèn",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "32",
+      "img": "TraSuaTuoiTranChau.webp",
+      "name": "Trà sữa tươi trân châu",
+      "price": 55000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "33",
+      "img": "TraSuaTuoiCaramelDau.webp",
+      "name": "Trà sữa tươi caramel dâu",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "34",
+      "img": "TraSuaTuoiTranChauDuongDen.webp",
+      "name": "Trà sữa tươi trân châu đường đen",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "35",
+      "img": "SuaTuoiTranChauDuongDenCheeseBrulee.webp",
+      "name": "Sữa tươi trân châu đường đen cheese brulee",
+      "price": 65000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "36",
+      "img": "SocolaTranChauDuongDenCheeseBrulee.webp",
+      "name": "Socola trân châu đường đen cheese brulee",
+      "price": 65000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "37",
+      "img": "SuaTuoiCaramelTranChauPudding.webp",
+      "name": "Sữa tươi caramel trân châu pudding",
+      "price": 60000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "38",
+      "img": "TraSuaTuoiOlong.webp",
+      "name": "Trà sữa tươi Olong",
+      "price": 55000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "39",
+      "img": "TraSuaTuoiPudding.webp",
+      "name": "Trà sữa tươi pudding",
+      "price": 55000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "40",
+      "img": "HongLucTraSuaTuoi.webp",
+      "name": "Hồng-Lục trà sữa tươi",
+      "price": 50000,
+      "categories_item_id": 3
+    },
+    {
+      "id": "41",
+      "img": "LucTraBuoiHongThanhMat.webp",
+      "name": "Lục trà bưởi hồng thanh mát",
+      "price": 58000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "42",
+      "img": "LucTraNho.webp",
+      "name": "Lục trà nho",
+      "price": 60000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "43",
+      "img": "TraTraiCayTuoiHawaiianNongBong.webp",
+      "name": "Trà trái cây tươi Hawaiian nóng bỏng",
+      "price": 60000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "44",
+      "img": "TraTraiCayNhietDoiFruitCup.webp",
+      "name": "Trà trái cây nhiệt đới Fruit cup",
+      "price": 60000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "45",
+      "img": "LucTraTraiCayMoctail.webp",
+      "name": "Lục trà trái cây Moctail",
+      "price": 60000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "46",
+      "img": "LucTraXoaiNgotDiu.webp",
+      "name": "Lục trà xoài ngọt dịu",
+      "price": 58000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "47",
+      "img": "TraVaiThieu.webp",
+      "name": "Trà vải thiều",
+      "price": 55000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "48",
+      "img": "LucTraChanhDay.webp",
+      "name": "Lục trà chanh dây",
+      "price": 60000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "49",
+      "img": "LucTraChanKimQuatLemonKumquat.webp",
+      "name": "Lục trà chanh Kim Quất (Lemon Kumquat)",
+      "price": 50000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "50",
+      "img": "HongTraDauNhietDoi.webp",
+      "name": "Hồng trà dâu nhiệt đới",
+      "price": 60000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "51",
+      "img": "LucTraDaoThomNgonBoDuong.webp",
+      "name": "Lục trà đào thơm ngon bổ dưỡng",
+      "price": 55000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "52",
+      "img": "TraOlongHoaHongChanhDao.webp",
+      "name": "TRà olong hoa hồng chanh đào",
+      "price": 50000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "53",
+      "img": "TraChanhTangSucDeKhang.webp",
+      "name": "Trà chanh tăng sức đề kháng",
+      "price": 45000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "54",
+      "img": "TraDauNamMy.webp",
+      "name": "Trà dâu Nam Mỹ",
+      "price": 58000,
+      "categories_item_id": 4
+    },
+    {
+      "id": "55",
+      "img": "KemPhomai.webp",
+      "name": "Kem Phomai",
+      "price": 20000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "56",
+      "img": "PuddingTrung.webp",
+      "name": "Pudding trứng",
+      "price": 10000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "57",
+      "img": "PuddingSocola.webp",
+      "name": "Pudding socola",
+      "price": 10000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "58",
+      "img": "KhoaiMonSua.webp",
+      "name": "Khoai môn sữa",
+      "price": 20000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "59",
+      "img": "TranChauDen.webp",
+      "name": "Trân châu đen",
+      "price": 10000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "60",
+      "img": "TranChauTrang.webp",
+      "name": "Trân châu trắng",
+      "price": 15000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "61",
+      "img": "HatYenMach.webp",
+      "name": "Hạt yến mạch",
+      "price": 15000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "62",
+      "img": "KemPhoMaiViPudding.webp",
+      "name": "Kem phomai vị pudding",
+      "price": 25000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "63",
+      "img": "DaoMieng.webp",
+      "name": "Đào miếng",
+      "price": 15000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "64",
+      "img": "TranChauDuongDen.webp",
+      "name": "Trân châu đường đen",
+      "price": 15000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "65",
+      "img": "ThachDua.webp",
+      "name": "Thạch dừa",
+      "price": 10000,
+      "categories_item_id": 5
+    },
+    {
+      "id": "66",
+      "img": "ThachNho.webp",
+      "name": "Thạch nho",
+      "price": 10000,
+      "categories_item_id": 5
+    }
+  ],
+  "toppings": [
+    {
+      "id": "55",
+      "nametopping": "Kem Phomai",
+      "price": 20000
+    },
+    {
+      "id": "56",
+      "nametopping": "Pudding trứng",
+      "price": 10000
+    },
+    {
+      "id": "57",
+      "nametopping": "Pudding socola",
+      "price": 10000
+    },
+    {
+      "id": "58",
+      "nametopping": "Khoai môn sữa",
+      "price": 20000
+    },
+    {
+      "id": "59",
+      "nametopping": "Trân châu đen",
+      "price": 10000
+    },
+    {
+      "id": "60",
+      "nametopping": "Trân châu trắng",
+      "price": 15000
+    },
+    {
+      "id": "61",
+      "nametopping": "Hạt yến mạch",
+      "price": 15000
+    },
+    {
+      "id": "62",
+      "nametopping": "Kem phomai vị pudding",
+      "price": 25000
+    },
+    {
+      "id": "63",
+      "nametopping": "Đào miếng",
+      "price": 15000
+    },
+    {
+      "id": "64",
+      "nametopping": "Trân châu đường đen",
+      "price": 15000
+    },
+    {
+      "id": "65",
+      "nametopping": "Thạch dừa",
+      "price": 10000
+    },
+    {
+      "id": "66",
+      "nametopping": "Thạch nho",
+      "price": 10000
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "user_id": 1,
+      "total": 75000,
+      "status": "Đã thanh toán",
+      "time": "2025-06-29T00:00:00"
+    },
+    {
+      "id": "2",
+      "user_id": "2",
+      "total": 55000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T17:22:28.742Z"
+    },
+    {
+      "id": "3",
+      "user_id": "2",
+      "total": 55000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T17:22:29.049Z"
+    },
+    {
+      "id": "4",
+      "user_id": "2",
+      "total": 55000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T17:23:23.516Z"
+    },
+    {
+      "id": "5",
+      "user_id": "2",
+      "total": 55000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T17:38:39.386Z"
+    },
+    {
+      "id": "6",
+      "user_id": "2",
+      "total": 55000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T17:47:57.232Z"
+    },
+    {
+      "id": "7",
+      "user_id": "2",
+      "total": 55000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T17:50:31.888Z"
+    },
+    {
+      "id": "8",
+      "user_id": "2",
+      "total": 210000,
+      "status": "Đã thanh toán",
+      "time": "2025-08-03T18:26:16.371Z"
+    }
+  ],
+  "orders_details": [
+    {
+      "id": "1",
+      "order_id": 1,
+      "products_id": 1,
+      "size_id": 2,
+      "quantity": 1,
+      "price": 35000
+    },
+    {
+      "id": "2",
+      "order_id": "8",
+      "products_id": "6",
+      "size_id": "1",
+      "quantity": 2,
+      "price": 95000
+    },
+    {
+      "id": "2",
+      "order_id": "8",
+      "products_id": "55",
+      "size_id": "1",
+      "quantity": 1,
+      "price": 20000
+    }
+  ],
+  "orders_details_toppings": [
+    {
+      "id": "1",
+      "order_detail_id": 1,
+      "product_id": 1
+    }
+  ],
+  "sizes": [
+    {
+      "id": "1",
+      "namesize": "M",
+      "price": 0
+    },
+    {
+      "id": "2",
+      "namesize": "L",
+      "price": 5000
+    },
+    {
+      "id": "3",
+      "namesize": "XL",
+      "price": 10000
+    }
+  ],
+  "cart": [
+    {
+      "id": "1",
+      "name": "Cà phê sữa đá",
+      "image": "CaPheSuaDa.webp",
+      "size": "M",
+      "toppings": [
+        {
+          "id": "55",
+          "nametopping": "Kem Phomai",
+          "price": 20000
+        }
+      ],
+      "price": 55000,
+      "quantity": 1
+    }
+  ]
+}

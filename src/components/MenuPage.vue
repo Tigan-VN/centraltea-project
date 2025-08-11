@@ -1,0 +1,292 @@
+<template>
+  <div class="menu-page">
+    <!-- Sort và Breadcrumb -->
+    <div class="page-title">
+      <div class="breadcrumb">
+        <router-link to="/">Trang chủ</router-link>
+        <span>/</span>
+        <router-link to="/menu">Menu</router-link>
+      </div>
+      <div class="sort-box">
+        <select v-model="sortBy">
+          <option value="popularity">Sắp xếp theo mức độ phổ biến</option>
+          <option value="rating">Sắp xếp theo hạng trung bình</option>
+          <option value="date">Sắp xếp theo mới nhất</option>
+          <option value="price-asc">Giá: thấp đến cao</option>
+          <option value="price-desc">Giá: cao đến thấp</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Left Sidebar -->
+      <div class="col-left">
+        <ul>
+          <li :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'">🥤 Tất cả</li>
+          <li :class="{ active: selectedCategory === 'tea' }" @click="selectedCategory = 'tea'">Trà sữa</li>
+          <li :class="{ active: selectedCategory === 'coffee' }" @click="selectedCategory = 'coffee'">Bánh Ngọt - Coffee</li>
+          <li :class="{ active: selectedCategory === 'milk' }" @click="selectedCategory = 'milk'">Sữa tươi</li>
+          <li :class="{ active: selectedCategory === 'fruit' }" @click="selectedCategory = 'fruit'">Trà trái cây</li>
+          <li :class="{ active: selectedCategory === 'topping' }" @click="selectedCategory = 'topping'">Topping</li>
+        </ul>
+      </div>
+
+      <!-- Right Content -->
+      <div class="col-right">
+        <div class="product-grid">
+          <div
+            v-for="product in filteredProducts"
+            :key="product.id"
+            class="product-card"
+            @click="goToDetail(product.id)"
+          >
+            <div class="badge" v-if="product.badge">{{ product.badge }}</div>
+            <img :src="getImage(product.img)" :alt="product.name" class="product-image" />
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-price">{{ formatPrice(product.price) }} đ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useProductsStore } from '@/store/productAPI';
+import { useRouter } from 'vue-router';
+
+const store = useProductsStore();
+const router = useRouter();
+
+const selectedCategory = ref('all');
+const sortBy = ref('popularity');
+
+onMounted(async () => {
+  await store.fetchProducts();
+});
+
+const filteredProducts = computed(() => {
+  let products = [...store.products];
+
+  if (selectedCategory.value !== 'all') {
+    const categoryMap = {
+      tea: [1, 2, 3, 4], // Trà sữa, Trà cream, Trà sữa tươi, Trà trái cây
+      coffee: [6, 7],     // Coffee, Bánh ngọt
+      milk: [3],          // Sữa tươi
+      fruit: [4],         // Trà trái cây
+      topping: [5]        // Topping
+    };
+    products = products.filter(p => categoryMap[selectedCategory.value].includes(p.categories_item_id));
+  }
+
+  // Sắp xếp
+  if (sortBy.value === 'price-asc') {
+    products.sort((a, b) => a.price - b.price);
+  } else if (sortBy.value === 'price-desc') {
+    products.sort((a, b) => b.price - a.price);
+  }
+
+  return products;
+});
+
+function goToDetail(id) {
+  router.push({ name: 'ProductDetail', params: { id } });
+}
+
+function getImage(imgFileName) {
+  try {
+    return require(`@/assets/img/img/${imgFileName}`);
+  } catch {
+    return 'https://via.placeholder.com/150';
+  }
+}
+
+function formatPrice(price) {
+  return price.toLocaleString('vi-VN');
+}
+</script>
+
+<style scoped>
+.menu-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.page-title {
+  background-color: #96c93e;
+  padding: 20px 5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.breadcrumb a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.breadcrumb a:hover {
+  color: #e0e0e0;
+}
+
+.sort-box select {
+  border-radius: 20px;
+  padding: 8px 16px;
+  background-color: #c8f7c5;
+  border: none;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.sort-box select:hover {
+  background-color: #b0e0a5;
+}
+
+/* Layout */
+.main {
+  display: flex;
+  padding: 40px 5em;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.col-left {
+  flex: 0 0 200px;
+  min-width: 160px;
+}
+
+.col-left ul {
+  list-style: none;
+  padding: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.col-left li {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s;
+}
+
+.col-left li:hover {
+  background-color: #f0f0f0;
+}
+
+.col-left li.active {
+  font-weight: bold;
+  background-color: #96c93e;
+  color: #fff;
+  border-left: 4px solid #fff;
+}
+
+/* Product Grid */
+.col-right {
+  flex: 1;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: #fff;
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+  max-width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-name {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+.product-price {
+  font-weight: bold;
+  color: #96c93e;
+  font-size: 16px;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff4444;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-title {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .main {
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .col-left {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .product-image {
+    height: 120px;
+  }
+
+  .product-name {
+    font-size: 14px;
+  }
+
+  .product-price {
+    font-size: 14px;
+  }
+}
+</style>
