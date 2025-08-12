@@ -7,6 +7,32 @@
         <span>/</span>
         <router-link to="/menu">Menu</router-link>
       </div>
+      <!-- Search -->
+      <div class="search-box">
+        <input 
+        v-model="searchQuery"
+        @focus="showSearchDropdown = true"
+        @input="onInput"
+        @blur="onSearchBlur"
+        placeholder="Tìm kiếm sản phẩm..."
+        type="text" name="" id=""
+        />
+        <button class="search-btn" @click="onSearchClick">Tìm kiếm</button>
+      <!-- Search Results Dropdown -->
+        <div v-if="showSearchDropdown && searchQuery" class="search-dropdown">
+          <div v-if="filteredProducts.length">
+            <div
+              v-for="product in filteredProducts"
+              :key="product.id"
+              class="search-item"
+              @mousedown.prevent="goToDetail(product.id)"
+            >
+            {{ product.name }}
+            </div>
+          </div>
+          <div v-else class="search-item not-found"> Không tìm thấy sản phẩm.</div>
+          </div>
+      </div>
       <div class="sort-box">
         <select v-model="sortBy">
           <option value="popularity">Sắp xếp theo mức độ phổ biến</option>
@@ -34,6 +60,7 @@
 
       <!-- Right Content -->
       <div class="col-right">
+        <!-- Grid sản phẩm -->
         <div class="product-grid">
           <div
             v-for="product in filteredProducts"
@@ -63,8 +90,13 @@ const router = useRouter();
 const selectedCategory = ref('all');
 const sortBy = ref('popularity');
 
+const searchQuery = ref('');
+const showSearchDropdown = ref(false);
+
 onMounted(async () => {
+  if(!store.products.length){
   await store.fetchProducts();
+  }
 });
 
 const filteredProducts = computed(() => {
@@ -81,6 +113,13 @@ const filteredProducts = computed(() => {
     products = products.filter(p => categoryMap[selectedCategory.value].includes(p.categories_item_id));
   }
 
+  // Lọc theo từ khóa tìm kiếm
+  const q = searchQuery.value.trim().toLowerCase();
+  if(q){
+    products = products.filter(p => p.name?.toLowerCase().includes(q)
+    );
+  }
+  
   // Sắp xếp
   if (sortBy.value === 'price-asc') {
     products.sort((a, b) => a.price - b.price);
@@ -91,8 +130,31 @@ const filteredProducts = computed(() => {
   return products;
 });
 
+// Dropdown kết quả tìm kiếm
+// const searchResults = computed(() => {
+//   const q = searchQuery.value.trim().toLowerCase();
+//   if (!q) return [];
+//   return store.products.filter(p => p.name?.toLowerCase().includes(q));
+// })
+
+function onInput(){
+  showSearchDropdown.value = !!searchQuery.value.trim();
+}
+
+function onSearchClick(){
+  showSearchDropdown.value = !!searchQuery.value.trim();
+}
+
 function goToDetail(id) {
   router.push({ name: 'ProductDetail', params: { id } });
+  showSearchDropdown.value = false;
+  searchQuery.value = '';
+}
+
+function onSearchBlur() {
+  setTimeout(() => {
+    showSearchDropdown.value = false;
+  }, 200);
 }
 
 function getImage(imgFileName) {
@@ -141,10 +203,80 @@ function formatPrice(price) {
   color: #e0e0e0;
 }
 
+/* Search */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-box input {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background-color: #c8f7c5;
+  color: #333;
+  width: 200px;
+  transition: background-color 0.3s;
+}
+
+.search-box input:focus {
+  background-color: #b0e0a5;
+}
+
+.search-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+  background-color: #45a049;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 100%; /* Ngay dưới input */
+  left: 0;
+  width: 100%;
+  background-color: #96c93e;
+  border-radius: 8px 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 999; /* Giúp nổi lên trên */
+
+}
+
+.search-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.search-item:hover {
+  background-color:#4caf50;
+  border-radius: 8px 12px;
+}
+
+.not-found {
+  color: #000;
+}
+
+/* end search */
+
 .sort-box select {
   border-radius: 20px;
   padding: 8px 16px;
-  background-color: #c8f7c5;
+  color: #fff;
+  background-color: #4caf50;
   border: none;
   font-weight: 500;
   font-size: 14px;
@@ -154,7 +286,7 @@ function formatPrice(price) {
 }
 
 .sort-box select:hover {
-  background-color: #b0e0a5;
+  background-color: #4caf50;
 }
 
 /* Layout */
