@@ -63,7 +63,7 @@
         <!-- Grid sản phẩm -->
         <div class="product-grid">
           <div
-            v-for="product in filteredProducts"
+            v-for="product in pageProducts"
             :key="product.id"
             class="product-card"
             @click="goToDetail(product.id)"
@@ -73,6 +73,21 @@
             <h3 class="product-name">{{ product.name }}</h3>
             <p class="product-price">{{ formatPrice(product.price) }} đ</p>
           </div>
+        </div>
+        <!-- phân trang -->
+        <div class="product-pagination" v-if="totalPage > 1">
+          <button class="page-btn" v-if="page > 1" @click="gotoPage(page - 1)">&lt;</button>
+          <button
+          class="page-btn"
+          v-for="p in totalPage"
+          :key="p"
+          :class="{ active: page === p }"
+          @click="gotoPage(p)"
+          >
+          {{p}}
+          </button>
+          <!-- tien page -->
+          <button class="page-btn" v-if="page < totalPage" @click="gotoPage(page + 1)">&gt;></button>
         </div>
       </div>
     </div>
@@ -137,6 +152,25 @@ const filteredProducts = computed(() => {
 //   return store.products.filter(p => p.name?.toLowerCase().includes(q));
 // })
 
+// phan trang
+const page = ref(1);
+const limit = ref(12);
+const totalPage = computed(() => 
+  Math.ceil(filteredProducts.value.length / limit.value)
+);
+
+const pageProducts = computed(() => {
+  const start = (page.value - 1) * limit.value;
+  const end = start + limit.value;
+  return filteredProducts.value.slice(start, end);
+});
+
+function gotoPage(p) {
+  if (p < 1 || p > totalPage.value) return;
+  page.value = p;
+}
+
+// search
 function onInput(){
   showSearchDropdown.value = !!searchQuery.value.trim();
 }
@@ -385,6 +419,29 @@ function formatPrice(price) {
   border-radius: 10px;
   font-size: 12px;
   text-transform: uppercase;
+}
+
+/* 🔹 CSS cho phân trang */
+.product-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.page-btn {
+  padding: 6px 12px;
+  border: none;
+  background-color: #c8f7c5;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.page-btn.active {
+  background-color: #96c93e;
+  color: white;
+}
+.page-btn:hover {
+  background-color: #b0e0a5;
 }
 
 /* Responsive */
