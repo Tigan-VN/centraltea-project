@@ -117,6 +117,15 @@ const handleRegister = async () => {
       return;
     }
 
+    if (users.some(user => user.email === registerData.value.email)) {
+      alert('Gmail đã được sử dụng!');
+      return;
+    }
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(registerData.value.email)) {
+      alert('Vui lòng nhập đúng địa chỉ Gmail (@gmail.com)!');
+      return;
+    }
+
     const newUser = {
       id: String(Math.max(...users.map(u => parseInt(u.id))) + 1),
       username: registerData.value.username,
