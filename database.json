@@ -774,5 +774,23 @@
       "price": 55000,
       "quantity": 1
     }
+  ],
+  "comments": [
+    {
+      "id": "e237",
+      "productId": "1",
+      "username": "tt",
+      "rating": 4,
+      "text": "cà phê rất ngon",
+      "date": "2025-08-13T11:14:47.526Z"
+    },
+    {
+      "id": "ecb7",
+      "productId": "1",
+      "username": "tt",
+      "rating": 5,
+      "text": "tôi rất thích cà phê này\n",
+      "date": "2025-08-13T11:25:27.092Z"
+    }
   ]
 }

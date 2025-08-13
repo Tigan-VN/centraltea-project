@@ -5,7 +5,12 @@
         <img :src="getImage(product.img)" :alt="product.name" />
       </div>
       <div class="info-box">
-        <h1 class="product-title">{{ product.name }}</h1>
+        <h1 class="product-title">
+          {{ product.name }}
+          <span v-if="averageRating > 0" class="avg-rating">
+            ({{ averageRating }} ★ | {{ comments.lenght }} đánh giá)
+          </span>
+        </h1>
         <p class="price">Giá cơ bản: {{ formatPrice(product.price) }} đ</p>
 
         <!-- Size -->
@@ -38,6 +43,33 @@
         <button class="add-cart-btn" @click="addToCart">Thêm vào giỏ hàng</button>
       </div>
     </div>
+     <!-- Bình luận -->
+    <div class="comment-list" v-if="comments.length">
+      <h3>Ý kiến khách hàng</h3>
+      <div v-for="cmt in comments" :key="cmt.id" class="comment-item">
+        <p><strong>{{ cmt.username }}</strong> - {{ cmt.rating }}★</p>
+        <p>{{ cmt.text }}</p>
+        <small>{{ new Date(cmt.date).toLocaleString('vi-VN') }}</small>
+      </div>
+    </div>
+    <div v-else>
+      <p>Chưa có bình luận nào cho sản phẩm này.</p>
+    </div>
+
+    <!-- Form gửi bình luận: chỉ hiện khi đã đăng nhập -->
+    <div v-if="userStore.currentUser" class="comment-form">
+      <h3>Đánh giá & Bình luận</h3>
+      <div class="rating-stars">
+        <span v-for="star in 5" :key="star" class="star"
+              :class="{ active: star <= userRating }"
+              @click="userRating = star">★</span>
+      </div>
+      <textarea v-model="userComment" placeholder="Nhập bình luận..." rows="3"></textarea>
+      <button @click="submitComment">Gửi</button>
+    </div>
+    <div v-else>
+      <p>Vui lòng <router-link to="/login">đăng nhập</router-link> để đánh giá sản phẩm.</p>
+    </div> 
   </div>
   <div v-else>
     <p>Loading...</p>
@@ -50,6 +82,7 @@ import { useRoute } from 'vue-router';
 import { useProductsStore } from '@/store/productAPI';
 import { useCartStore } from '@/store/Cart.js';
 import { useStore } from '@/store/userStore';
+import axios from 'axios';
 
 const cartStore = useCartStore();
 const store = useProductsStore();
@@ -62,7 +95,12 @@ const toppings = ref([]);
 const selectedSize = ref(null);
 const selectedToppings = ref([]);
 
-// Fetch data
+// rating & comment
+const comments = ref([]);
+const userRating = ref(0);
+const userComment = ref('');
+
+// Fetch data + bình luận
 onMounted(async () => {
   const id = route.params.id;
   await store.fetchProductDetails(id);
@@ -73,8 +111,44 @@ onMounted(async () => {
   sizes.value = store.sizes;
   toppings.value = store.toppings;
   selectedSize.value = sizes.value[0]?.id || null;
+
+  // lấy danh sách bình luận từ JS
+  const res = await axios.get(`http://localhost:3000/comments?productId=${id}`);
+  comments.value = res.data;
 });
 
+// gửi bình luận
+async function submitComment(){
+  if (!userRating.value || !userComment.value.trim()) {
+    alert('Vui lòng chọn số sao và nhập nội dung bình luận.');
+    return;
+  }
+
+  const newComment = {
+      productId: product.value.id,
+      username: userStore.currentUser.username,
+      rating: userRating.value,
+      text: userComment.value,
+      date: new Date().toISOString()
+    };
+
+    try {
+      const res = await axios.post('http://localhost:3000/comments', newComment);
+      comments.value.push(res.data);
+      userRating.value = 0;
+      userComment.value = '';
+      alert('Bình luận đã được gửi thành công!');
+    } catch (error) {
+      console.error('Lỗi khi gửi bình luận:', error);
+      alert('Đã xảy ra lỗi khi gửi bình luận. Vui lòng thử lại sau.');
+    }
+}
+// điểm trung bình rating
+const averageRating = computed(() => {
+  if(comments.value.lenght === 0) return 0;
+  const sum = comments.value.reduce((total, c) => total + c.rating, 0);
+  return (sum / comments.value.length).toFixed(1);
+});
 // Watch currentUser changes
 watch(
   () => userStore.currentUser,
@@ -259,6 +333,61 @@ function addToCart() {
 
 .add-cart-btn:hover {
   background: #7ba730;
+}
+
+.avg-rating {
+  font-size: 18px;
+  color: gold;
+  margin-left: 5px;
+}
+
+.comment-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.comment-item strong {
+  color: #333;
+}
+
+.rating-stars {
+  font-size: 22px;
+  margin: 5px 0;
+}
+
+.star {
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.star.active {
+  color: gold;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.comment-form button {
+  background-color: #28a745;
+  border: none;
+  padding: 8px 15px;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.comment-form button:hover {
+  background-color: #218838;
 }
 
 /* Responsive */
