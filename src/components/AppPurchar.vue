@@ -1,15 +1,21 @@
 <template>
   <div class="purchar-container">
     <h2 class="purchar-title">Thanh toán</h2>
+
+    <!-- Nếu chưa đăng nhập -->
     <div v-if="!currentUser" class="purchar-message">
       <p>Vui lòng <router-link to="/login" class="login-link">đăng nhập</router-link> để thanh toán!</p>
     </div>
+
+    <!-- Nếu đã đăng nhập -->
     <div v-else class="purchar-content">
+
+      <!-- Thông tin khách hàng -->
       <div class="user-info">
         <h3>Thông Tin khách Hàng</h3>
         <p><strong>Tên:</strong> {{ currentUser.username }}</p>
         <p><strong>Số điện thoại:</strong> {{ currentUser.phone }}</p>
-        <p><strong>Gmail:</strong> {{ currentUser.email }}</p>
+        <p><strong>Email:</strong> {{ currentUser.email }}</p>
         <div class="address-form">
           <label>Địa chỉ:</label>
           <input v-model="address.city" placeholder="Thành phố" required />
@@ -18,6 +24,8 @@
           <input v-model="address.street" placeholder="Số nhà" required />
         </div>
       </div>
+
+      <!-- Chi tiết đơn hàng -->
       <div class="order-details">
         <h3>Chi tiết đơn hàng</h3>
         <table class="order-table">
@@ -42,92 +50,53 @@
         </table>
         <p class="order-total">Tổng cộng: {{ formatPrice(totalAmount) }} đ</p>
       </div>
+
+      <!-- Phương thức thanh toán -->
       <div class="payment-method">
         <h3>Phương thức thanh toán</h3>
         <label><input type="radio" v-model="paymentMethod" value="bank" /> Chuyển khoản ngân hàng</label>
         <label><input type="radio" v-model="paymentMethod" value="cod" /> Trả tiền khi nhận hàng</label>
-        <label><input type="radio" v-model="paymentMethod" value="momo" /> Momo</label>
-        <div v-if="showQR" class="qr-code">
-          <canvas ref="qrCanvas"></canvas>
-          <p>Mã QR sẽ hiển thị khi bạn chọn phương thức.</p>
+
+        <!-- QR Code -->
+        <div v-if="paymentMethod === 'bank' && totalAmount > 0" class="qr-code">
+          <img :src="hoaDonStore.qrImage('bank', currentUser, totalAmount)" alt="QR Code" />
         </div>
       </div>
+
+      <!-- Nút Thanh toán -->
       <button @click="handleCheckout" class="checkout-btn" :disabled="!isFormValid">Thanh toán</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '@/store/userStore';
 import { useProductsStore } from '@/store/productAPI';
 import { useCartStore } from '@/store/Cart.js';
-import QRCode from 'qrcode';
+import { useHoaDonStore } from '@/store/hoadon';
 import axios from 'axios';
 
 const router = useRouter();
 const userStore = useStore();
 const productStore = useProductsStore();
 const cartStore = useCartStore();
+const hoaDonStore = useHoaDonStore();
+
 const currentUser = computed(() => userStore.currentUser);
+const cartItems = computed(() => currentUser.value ? cartStore.getCart() || {} : {});
+const totalAmount = computed(() => Object.values(cartItems.value).reduce((sum, item) => sum + item.price * item.quantity, 0));
 
-const cartItems = computed(() => {
-  if (!currentUser.value) return {};
-  return cartStore.getCart() || {};
-});
-
-const totalAmount = computed(() => {
-  return Object.values(cartItems.value).reduce((sum, item) => sum + item.price * item.quantity, 0);
-});
-
-const address = ref({
-  city: '',
-  district: '',
-  ward: '',
-  street: ''
-});
+const address = ref({ city: '', district: '', ward: '', street: '' });
 const paymentMethod = ref('cod');
-const qrCanvas = ref(null);
-const showQR = ref(false);
-
-function formatPrice(price) {
-  return price.toLocaleString('vi-VN');
-}
 
 const isFormValid = computed(() => {
   return address.value.city && address.value.district && address.value.ward && address.value.street;
 });
 
-watch(paymentMethod, async (newValue) => {
-  console.log('Payment method changed to:', newValue);
-  showQR.value = newValue === 'bank' || newValue === 'momo';
-  if (showQR.value) {
-    await nextTick();
-    console.log('qrCanvas after nextTick:', qrCanvas.value);
-    if (qrCanvas.value) {
-      await generateQR();
-      console.log('QR generated for method:', newValue);
-    } else {
-      console.warn('qrCanvas is null, QR not generated');
-    }
-  } else {
-    showQR.value = false;
-  }
-});
-
-async function generateQR() {
-  if (qrCanvas.value) {
-    const paymentInfo = `Momo ID: 0987261536 - Số tiền: ${formatPrice(totalAmount.value)} đ`;
-    try {
-      await QRCode.toCanvas(qrCanvas.value, paymentInfo, { width: 200 });
-      console.log('QR successfully generated with:', paymentInfo);
-    } catch (error) {
-      console.error('Error generating QR:', error);
-    }
-  } else {
-    console.warn('qrCanvas not available');
-  }
+function formatPrice(price) {
+  return price.toLocaleString('vi-VN');
 }
 
 async function handleCheckout() {
@@ -135,27 +104,23 @@ async function handleCheckout() {
     alert('Vui lòng điền đầy đủ thông tin địa chỉ!');
     return;
   }
-
-  if(Object.keys(cartItems.value).length === 0){
-    alert('Giỏ hàng của bạn đang trống!, khong thể thanh toán');
+  if (Object.keys(cartItems.value).length === 0) {
+    alert('Giỏ hàng của bạn đang trống!');
     return;
   }
-
-  if (paymentMethod.value === 'bank' || paymentMethod.value === 'momo') {
-    if (!qrCanvas.value) return;
-    await generateQR();
+  if (paymentMethod.value === 'bank') {
     alert('Vui lòng quét mã QR để thanh toán!');
-    return;
   }
-
-  submitOrder('Đã thanh toán');
+  await submitOrder(paymentMethod.value === 'bank' ? 'Đã thanh toán' : 'Chưa thanh toán');
 }
 
 async function submitOrder(status) {
   try {
-    console.log('Submitting order, store.sizes:', productStore.sizes);
+    const ordersRes = await axios.get('http://localhost:3000/orders');
+    const newOrderId = String(Math.max(...ordersRes.data.map(o => parseInt(o.id))) + 1);
+
     const order = {
-      id: String(Math.max(...(await axios.get('http://localhost:3000/orders')).data.map(o => parseInt(o.id))) + 1),
+      id: newOrderId,
       user_id: currentUser.value.id,
       total: totalAmount.value,
       status: status,
@@ -163,15 +128,15 @@ async function submitOrder(status) {
     };
     await axios.post('http://localhost:3000/orders', order);
 
-    const orderId = order.id;
+    // Thêm chi tiết đơn hàng
+    const orderDetailsRes = await axios.get('http://localhost:3000/orders_details');
+    let lastDetailId = Math.max(...orderDetailsRes.data.map(od => parseInt(od.id)));
+
     await Promise.all(Object.entries(cartItems.value).map(async ([, item]) => {
       const sizeId = productStore.sizes?.find(s => s.namesize === item.size)?.id || '1';
-      if (!sizeId) {
-        console.warn('Size not found for item:', item);
-      }
       const orderDetail = {
-        id: String(Math.max(...(await axios.get('http://localhost:3000/orders_details')).data.map(od => parseInt(od.id))) + 1),
-        order_id: orderId,
+        id: String(++lastDetailId),
+        order_id: newOrderId,
         products_id: item.id,
         size_id: sizeId,
         quantity: item.quantity,
@@ -180,6 +145,7 @@ async function submitOrder(status) {
       await axios.post('http://localhost:3000/orders_details', orderDetail);
     }));
 
+    // Xóa giỏ hàng
     localStorage.removeItem(`cart_${currentUser.value.id}`);
     cartStore.cart = {};
     alert('Đơn hàng đã được đặt thành công!');
@@ -191,17 +157,12 @@ async function submitOrder(status) {
 }
 
 onMounted(async () => {
-  console.log('Mounted, initial paymentMethod:', paymentMethod.value, 'qrCanvas:', qrCanvas.value);
-  if (paymentMethod.value === 'bank' || paymentMethod.value === 'momo') {
-    showQR.value = true;
-    generateQR();
-  }
   if (!productStore.sizes || productStore.sizes.length === 0) {
     await productStore.fetchSizes();
-    console.log('Fetched sizes:', productStore.sizes);
   }
 });
 </script>
+
 
 <style scoped>
 .purchar-container {
@@ -232,6 +193,9 @@ onMounted(async () => {
 }
 
 .user-info, .order-details, .payment-method {
+  background-color: bisque;
+  padding: 15px;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 
@@ -277,8 +241,9 @@ onMounted(async () => {
   margin: 10px 0;
 }
 
-.qr-code {
+.qr-code img{
   text-align: center;
+  max-width: 200px;
   margin-top: 10px;
 }
 
