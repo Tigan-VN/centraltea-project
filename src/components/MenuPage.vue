@@ -51,7 +51,7 @@
         <ul>
           <li :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'">🥤 Tất cả</li>
           <li :class="{ active: selectedCategory === 'tea' }" @click="selectedCategory = 'tea'">Trà sữa</li>
-          <li :class="{ active: selectedCategory === 'coffee' }" @click="selectedCategory = 'coffee'">Bánh Ngọt - Coffee</li>
+          <li :class="{ active: selectedCategory === 'coffee' }" @click="selectedCategory = 'coffee'">Coffee</li>
           <li :class="{ active: selectedCategory === 'milk' }" @click="selectedCategory = 'milk'">Sữa tươi</li>
           <li :class="{ active: selectedCategory === 'fruit' }" @click="selectedCategory = 'fruit'">Trà trái cây</li>
           <li :class="{ active: selectedCategory === 'topping' }" @click="selectedCategory = 'topping'">Topping</li>
@@ -140,8 +140,16 @@ const filteredProducts = computed(() => {
     products.sort((a, b) => a.price - b.price);
   } else if (sortBy.value === 'price-desc') {
     products.sort((a, b) => b.price - a.price);
-  }
-
+  }else if (sortBy.value === 'rating') {
+  // Cần có product.rating (VD: số sao trung bình)
+   products.sort((a, b) => b.avgRating - a.avgRating);
+} else if (sortBy.value === 'popularity') {
+  // Cần có product.popularity (VD: lượt mua hoặc lượt xem)
+  products.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+} else if (sortBy.value === 'date') {
+  // Cần có product.created_at hoặc date
+  products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+}
   return products;
 });
 

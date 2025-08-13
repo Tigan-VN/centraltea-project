@@ -791,6 +791,22 @@
       "rating": 5,
       "text": "tôi rất thích cà phê này\n",
       "date": "2025-08-13T11:25:27.092Z"
+    },
+    {
+      "id": "96c3",
+      "productId": "2",
+      "username": "tt",
+      "rating": 3,
+      "text": "cà phê ổn\n",
+      "date": "2025-08-13T12:29:03.248Z"
+    },
+    {
+      "id": "8d56",
+      "productId": "3",
+      "username": "tt",
+      "rating": 2,
+      "text": "có vẻ kh hợp với tôi",
+      "date": "2025-08-13T12:29:25.793Z"
     }
   ]
 }
