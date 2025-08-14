@@ -29,7 +29,7 @@
         </div>
 
         <!-- Topping -->
-        <div class="topping-select">
+        <div class="topping-select" v-if="product.categories_item_id !== 5">
           <label>Chọn topping:</label>
           <div class="topping-list">
             <label v-for="topping in toppings" :key="topping.id" class="topping-item">
